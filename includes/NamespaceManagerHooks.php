@@ -22,11 +22,12 @@ class NamespaceManagerHooks {
             $wgNamespaceProtection,
             $wgNamespacesWithSubpages,
             $wgNamespacesToBeSearchedDefault,
-            $wgNonincludableNamespaces;
+            $wgNonincludableNamespaces
+            $wgVisualEditorAvailableNamespaces;
         
         $data = NamespaceManager::loadNamespaceData();
         
-        if ($data === false) {
+        if (!isset($data) || $data === false) {
             return;
         }
 
@@ -34,6 +35,7 @@ class NamespaceManagerHooks {
         foreach ($data as $namespaceDefinition) {
             if (isset($namespaceDefinition['id'])) {
                 $id = $namespaceDefinition['id'];
+                $name = $namespaceDefinition['name'];
             } else {
                 wfDebugLog('NamespaceManager', 'Invalid namespace number, cannot proceed.');
             }
@@ -56,6 +58,11 @@ class NamespaceManagerHooks {
             }
             if (isset($namespaceDefinition['talkincludable']) && $namespaceDefinition['talkincludable'] === false) {
                 $wgNonincludableNamespaces[] = $id + 1;
+            }
+
+            // Is enabled for VisualEditor
+            if (isset($namespaceDefinition['visualeditor']) && $namespaceDefinition['visualeditor'] === true) {
+                $wgVisualEditorAvailableNamespaces[$name] = true;
             }
 
             // Aliases for non-talk
