@@ -32,10 +32,12 @@ class NamespaceManager {
             ? $wgNamespaceManagerDataPath
             : __DIR__ . '/../'. $wgNamespaceManagerDataPath;
         
-        $fileContents = file_get_contents($filepath);
-        if ($fileContents === false) {
+        if (!file_exists($filepath)) {
             return false;
         }
+
+        $fileContents = file_get_contents($filepath);
+        
         return $fileContents;
     }
 
