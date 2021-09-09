@@ -22,7 +22,7 @@ class NamespaceManagerHooks {
             $wgNamespaceProtection,
             $wgNamespacesWithSubpages,
             $wgNamespacesToBeSearchedDefault,
-            $wgNonincludableNamespaces
+            $wgNonincludableNamespaces,
             $wgVisualEditorAvailableNamespaces;
         
         $data = NamespaceManager::loadNamespaceData();
