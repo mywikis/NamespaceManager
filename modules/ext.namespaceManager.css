@@ -1,0 +1,17 @@
+.namespacemanager-namespace {
+	margin-bottom: 1em;
+}
+
+.namespacemanager-actions {
+	margin: 1em 0;
+}
+
+.namespacemanager-actions .oo-ui-buttonWidget {
+	margin-right: 0.5em;
+}
+
+/* Hidden by default; revealed via the "Toggle raw JSON editor" button when
+ * JavaScript is enabled. Without JavaScript it remains visible as a fallback. */
+.client-js .namespacemanager-rawjson {
+	display: none;
+}

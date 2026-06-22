@@ -33,6 +33,20 @@
     "SpecialPages": {
         "ManageNamespaces": "SpecialManageNamespaces"
     },
+    "ResourceFileModulePaths": {
+        "localBasePath": "modules",
+        "remoteExtPath": "NamespaceManager/modules"
+    },
+    "ResourceModules": {
+        "ext.namespaceManager": {
+            "scripts": "ext.namespaceManager.js",
+            "styles": "ext.namespaceManager.css",
+            "dependencies": [
+                "oojs-ui-core",
+                "oojs-ui-widgets"
+            ]
+        }
+    },
     "GroupPermissions": {
         "sysop": {
             "managenamespaces": true

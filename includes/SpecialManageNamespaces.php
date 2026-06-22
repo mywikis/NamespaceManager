@@ -22,6 +22,7 @@ class SpecialManageNamespaces extends SpecialPage {
 		
 		$out = $this->getOutput();
 		$out->enableOOUI();
+		$out->addModules( 'ext.namespaceManager' );
 		$out->setPageTitle( $this->msg( 'managenamespaces-title' ) );
 		$out->addWikiMsg( 'managenamespaces-intro' );
 
@@ -46,9 +47,23 @@ class SpecialManageNamespaces extends SpecialPage {
             $textWidgetContents = NamespaceManager::loadNamespaceDataRaw();
         }
 
+        // Provide the current namespace definitions to the frontend interface so
+        // it can render the dynamic management UI. Falls back to an empty list if
+        // the stored file is missing or contains invalid JSON.
+        $namespaceData = json_decode($textWidgetContents !== false ? $textWidgetContents : '', true);
+        if (!is_array($namespaceData)) {
+            $namespaceData = [];
+        }
+        $out->addJsConfigVars('wgNamespaceManagerData', $namespaceData);
+
+        // Container the JavaScript interface renders into. When JavaScript is
+        // unavailable, this stays empty and the raw JSON editor below is used.
+        $out->addHTML(Html::element('div', ['id' => 'namespacemanager-app']));
+
         $out->addHTML(new OOUI\FormLayout([
             'method' => 'POST',
             'action' => 'Special:ManageNamespaces',
+            'id' => 'namespacemanager-form',
             'items' => [
                 new OOUI\FieldsetLayout([
                     'label' => 'Namespaces definition',
@@ -62,12 +77,13 @@ class SpecialManageNamespaces extends SpecialPage {
                             [
                                 'label' => 'JSON file contents',
                                 'align' => 'top',
+                                'classes' => ['namespacemanager-rawjson'],
                             ]
                         ),
                         new OOUI\FieldLayout(
                             new OOUI\ButtonInputWidget([
                                 'name' => 'save',
-                                'label' => 'Save JSON',
+                                'label' => 'Save namespaces',
                                 'type' => 'submit',
                                 'flags' => ['primary', 'progressive'],
                                 'icon' => 'check',
