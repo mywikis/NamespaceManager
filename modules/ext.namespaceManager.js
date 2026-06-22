@@ -53,7 +53,7 @@
 	var namespaces = [];
 	// Parallel array of { key: widget } maps, one entry per rendered namespace.
 	var panelWidgets = [];
-	var $app, $jsonField, $rawField;
+	var $app = null, $jsonField = null, $rawField = null;
 
 	function labelFor( key ) {
 		return Object.prototype.hasOwnProperty.call( propertyLabels, key ) ?
@@ -123,30 +123,30 @@
 	}
 
 	/**
-	 * Compute the next available even namespace id within the allowed range.
+	 * Compute the lowest available even namespace id within the allowed range
+	 * (3000-4998). Returns null when every valid id is already in use.
 	 *
-	 * @return {number}
+	 * @return {number|null}
 	 */
 	function nextId() {
-		var max = 2998;
+		var used = {};
 		namespaces.forEach( function ( ns ) {
-			if ( typeof ns.id === 'number' && ns.id > max ) {
-				max = ns.id;
+			if ( typeof ns.id === 'number' ) {
+				used[ ns.id ] = true;
 			}
 		} );
-		var candidate = max + 2;
-		if ( candidate < 3000 ) {
-			candidate = 3000;
+		for ( var candidate = 3000; candidate <= 4998; candidate += 2 ) {
+			if ( !used[ candidate ] ) {
+				return candidate;
+			}
 		}
-		if ( candidate > 4998 ) {
-			candidate = 4998;
-		}
-		return candidate;
+		return null;
 	}
 
 	/**
 	 * Create a blank namespace definition based on the schema already in use by
-	 * the existing namespaces (or the default schema when there are none).
+	 * the existing namespaces (or the default schema when there are none). The
+	 * caller is responsible for assigning a valid id.
 	 *
 	 * @return {Object}
 	 */
@@ -165,7 +165,6 @@
 				ns[ key ] = '';
 			}
 		} );
-		ns.id = nextId();
 		return ns;
 	}
 
@@ -259,7 +258,14 @@
 
 	function addNamespace() {
 		collect();
-		namespaces.push( makeNamespace() );
+		var id = nextId();
+		if ( id === null ) {
+			OO.ui.alert( 'All namespace ids in the range 3000-4998 are already in use.' );
+			return;
+		}
+		var ns = makeNamespace();
+		ns.id = id;
+		namespaces.push( ns );
 		render();
 	}
 
