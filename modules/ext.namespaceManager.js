@@ -55,6 +55,11 @@
 	var panelWidgets = [];
 	var $app = null, $jsonField = null, $rawField = null;
 
+	// Custom namespace ids must be even and within this inclusive range, matching
+	// the constraints enforced server-side in NamespaceManagerHooks.
+	var MIN_NAMESPACE_ID = 3000;
+	var MAX_NAMESPACE_ID = 4998;
+
 	function labelFor( key ) {
 		return Object.prototype.hasOwnProperty.call( propertyLabels, key ) ?
 			propertyLabels[ key ] : key;
@@ -123,8 +128,8 @@
 	}
 
 	/**
-	 * Compute the lowest available even namespace id within the allowed range
-	 * (3000-4998). Returns null when every valid id is already in use.
+	 * Compute the lowest available even namespace id within the allowed range.
+	 * Returns null when every valid id is already in use.
 	 *
 	 * @return {number|null}
 	 */
@@ -135,7 +140,7 @@
 				used[ ns.id ] = true;
 			}
 		} );
-		for ( var candidate = 3000; candidate <= 4998; candidate += 2 ) {
+		for ( var candidate = MIN_NAMESPACE_ID; candidate <= MAX_NAMESPACE_ID; candidate += 2 ) {
 			if ( !used[ candidate ] ) {
 				return candidate;
 			}
@@ -260,7 +265,8 @@
 		collect();
 		var id = nextId();
 		if ( id === null ) {
-			OO.ui.alert( 'All namespace ids in the range 3000-4998 are already in use.' );
+			OO.ui.alert( 'All namespace ids in the range ' + MIN_NAMESPACE_ID +
+				'-' + MAX_NAMESPACE_ID + ' are already in use.' );
 			return;
 		}
 		var ns = makeNamespace();
