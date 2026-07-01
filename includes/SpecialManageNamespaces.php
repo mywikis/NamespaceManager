@@ -22,7 +22,7 @@ class SpecialManageNamespaces extends SpecialPage {
 		
 		$out = $this->getOutput();
 		$out->enableOOUI();
-		$out->setPageTitle( $this->msg( 'managenamespaces-title' ) );
+		$out->setPageTitle( $this->msg( 'managenamespaces-title' )->text() );
 		$out->addWikiMsg( 'managenamespaces-intro' );
 
         $request = $this->getRequest();
