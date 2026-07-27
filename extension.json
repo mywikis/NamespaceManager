@@ -83,7 +83,8 @@
 				"CdxField",
 				"CdxIcon",
 				"CdxMessage",
-				"CdxTextInput"
+				"CdxTextInput",
+				"CdxTooltip"
 			],
 			"packageFiles": [
 				"ext.namespaceManager.manage/init.js",
@@ -93,6 +94,7 @@
 					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
 					"callbackParam": [
 						"cdxIconAdd",
+						"cdxIconHelp",
 						"cdxIconTrash"
 					]
 				}
@@ -100,17 +102,24 @@
 			"messages": [
 				"namespacemanager-add",
 				"namespacemanager-aliases",
+				"namespacemanager-aliases-help",
 				"namespacemanager-chip-description",
 				"namespacemanager-content",
 				"namespacemanager-editpermissions",
+				"namespacemanager-editpermissions-help",
 				"namespacemanager-empty",
 				"namespacemanager-id",
+				"namespacemanager-id-help",
+				"namespacemanager-help-label",
 				"namespacemanager-includable",
 				"namespacemanager-load-error",
 				"namespacemanager-loading",
 				"namespacemanager-name",
+				"namespacemanager-name-help",
 				"namespacemanager-new-namespace",
+				"namespacemanager-optional",
 				"namespacemanager-remove",
+				"namespacemanager-required",
 				"namespacemanager-save",
 				"namespacemanager-save-error",
 				"namespacemanager-save-success",
@@ -118,7 +127,9 @@
 				"namespacemanager-searchdefault",
 				"namespacemanager-subpages",
 				"namespacemanager-talkaliases",
+				"namespacemanager-talkaliases-help",
 				"namespacemanager-talkeditpermissions",
+				"namespacemanager-talkeditpermissions-help",
 				"namespacemanager-talkincludable",
 				"namespacemanager-talkname",
 				"namespacemanager-talkname-help",
@@ -149,7 +160,8 @@
 				"CdxChipInput",
 				"CdxField",
 				"CdxMessage",
-				"CdxTextInput"
+				"CdxTextInput",
+				"CdxTooltip"
 			],
 			"styles": [
 				"ext.namespaceManager.manage/styles.less"

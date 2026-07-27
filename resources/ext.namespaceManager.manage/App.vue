@@ -41,7 +41,7 @@
 				</cdx-button>
 			</div>
 
-			<div class="namespacemanager-grid">
+			<div class="namespacemanager-grid namespacemanager-grid--fields">
 				<cdx-field
 					:status="fieldStatus( index, 'id' )"
 					:messages="fieldMessages( index, 'id' )"
@@ -49,7 +49,25 @@
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'id' ) }"
 				>
 					<template #label>
-						{{ $i18n( 'namespacemanager-id' ).text() }}
+						<span>{{ $i18n( 'namespacemanager-id' ).text() }}</span>
+						<span
+							class="namespacemanager-indicator namespacemanager-indicator--required"
+						>
+							{{ $i18n( 'namespacemanager-required' ).text() }}
+						</span>
+						<span
+							v-cdx-tooltip:top="$i18n( 'namespacemanager-id-help' ).text()"
+							class="namespacemanager-help"
+							tabindex="0"
+							:aria-label="
+								$i18n(
+									'namespacemanager-help-label',
+									$i18n( 'namespacemanager-id' ).text()
+								).text()
+							"
+						>
+							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+						</span>
 					</template>
 					<cdx-text-input
 						v-model="namespace.id"
@@ -57,6 +75,7 @@
 						:min="3000"
 						:max="4998"
 						:step="2"
+						required
 						:status="fieldStatus( index, 'id' )"
 						@update:model-value="onBasicFieldChange( index, 'id' )"
 					></cdx-text-input>
@@ -68,10 +87,29 @@
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'name' ) }"
 				>
 					<template #label>
-						{{ $i18n( 'namespacemanager-name' ).text() }}
+						<span>{{ $i18n( 'namespacemanager-name' ).text() }}</span>
+						<span
+							class="namespacemanager-indicator namespacemanager-indicator--required"
+						>
+							{{ $i18n( 'namespacemanager-required' ).text() }}
+						</span>
+						<span
+							v-cdx-tooltip:top="$i18n( 'namespacemanager-name-help' ).text()"
+							class="namespacemanager-help"
+							tabindex="0"
+							:aria-label="
+								$i18n(
+									'namespacemanager-help-label',
+									$i18n( 'namespacemanager-name' ).text()
+								).text()
+							"
+						>
+							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+						</span>
 					</template>
 					<cdx-text-input
 						v-model="namespace.name"
+						required
 						:status="fieldStatus( index, 'name' )"
 						@update:model-value="onBasicFieldChange( index, 'name' )"
 					></cdx-text-input>
@@ -83,16 +121,30 @@
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'talkname' ) }"
 				>
 					<template #label>
-						{{ $i18n( 'namespacemanager-talkname' ).text() }}
+						<span>{{ $i18n( 'namespacemanager-talkname' ).text() }}</span>
+						<span
+							class="namespacemanager-indicator namespacemanager-indicator--optional"
+						>
+							{{ $i18n( 'namespacemanager-optional' ).text() }}
+						</span>
+						<span
+							v-cdx-tooltip:top="$i18n( 'namespacemanager-talkname-help' ).text()"
+							class="namespacemanager-help"
+							tabindex="0"
+							:aria-label="
+								$i18n(
+									'namespacemanager-help-label',
+									$i18n( 'namespacemanager-talkname' ).text()
+								).text()
+							"
+						>
+							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+						</span>
 					</template>
 					<cdx-text-input
 						v-model="namespace.talkname"
 						:status="fieldStatus( index, 'talkname' )"
 					></cdx-text-input>
-					<template #help-text>
-						{{ fieldError( index, 'talkname' ) ||
-							$i18n( 'namespacemanager-talkname-help' ).text() }}
-					</template>
 				</cdx-field>
 			</div>
 
@@ -123,7 +175,7 @@
 				</cdx-checkbox>
 			</div>
 
-			<div class="namespacemanager-grid">
+			<div class="namespacemanager-grid namespacemanager-grid--fields">
 				<cdx-field
 					:status="fieldStatus( index, 'aliases' )"
 					:messages="fieldMessages( index, 'aliases' )"
@@ -131,7 +183,25 @@
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'aliases' ) }"
 				>
 					<template #label>
-						{{ $i18n( 'namespacemanager-aliases' ).text() }}
+						<span>{{ $i18n( 'namespacemanager-aliases' ).text() }}</span>
+						<span
+							class="namespacemanager-indicator namespacemanager-indicator--optional"
+						>
+							{{ $i18n( 'namespacemanager-optional' ).text() }}
+						</span>
+						<span
+							v-cdx-tooltip:top="$i18n( 'namespacemanager-aliases-help' ).text()"
+							class="namespacemanager-help"
+							tabindex="0"
+							:aria-label="
+								$i18n(
+									'namespacemanager-help-label',
+									$i18n( 'namespacemanager-aliases' ).text()
+								).text()
+							"
+						>
+							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+						</span>
 					</template>
 					<cdx-chip-input
 						v-model:input-chips="namespace.aliases"
@@ -146,7 +216,27 @@
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'talkaliases' ) }"
 				>
 					<template #label>
-						{{ $i18n( 'namespacemanager-talkaliases' ).text() }}
+						<span>{{ $i18n( 'namespacemanager-talkaliases' ).text() }}</span>
+						<span
+							class="namespacemanager-indicator namespacemanager-indicator--optional"
+						>
+							{{ $i18n( 'namespacemanager-optional' ).text() }}
+						</span>
+						<span
+							v-cdx-tooltip:top="
+								$i18n( 'namespacemanager-talkaliases-help' ).text()
+							"
+							class="namespacemanager-help"
+							tabindex="0"
+							:aria-label="
+								$i18n(
+									'namespacemanager-help-label',
+									$i18n( 'namespacemanager-talkaliases' ).text()
+								).text()
+							"
+						>
+							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+						</span>
 					</template>
 					<cdx-chip-input
 						v-model:input-chips="namespace.talkaliases"
@@ -163,7 +253,27 @@
 					}"
 				>
 					<template #label>
-						{{ $i18n( 'namespacemanager-editpermissions' ).text() }}
+						<span>{{ $i18n( 'namespacemanager-editpermissions' ).text() }}</span>
+						<span
+							class="namespacemanager-indicator namespacemanager-indicator--optional"
+						>
+							{{ $i18n( 'namespacemanager-optional' ).text() }}
+						</span>
+						<span
+							v-cdx-tooltip:top="
+								$i18n( 'namespacemanager-editpermissions-help' ).text()
+							"
+							class="namespacemanager-help"
+							tabindex="0"
+							:aria-label="
+								$i18n(
+									'namespacemanager-help-label',
+									$i18n( 'namespacemanager-editpermissions' ).text()
+								).text()
+							"
+						>
+							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+						</span>
 					</template>
 					<cdx-chip-input
 						v-model:input-chips="namespace.editpermissions"
@@ -181,7 +291,29 @@
 					}"
 				>
 					<template #label>
-						{{ $i18n( 'namespacemanager-talkeditpermissions' ).text() }}
+						<span>
+							{{ $i18n( 'namespacemanager-talkeditpermissions' ).text() }}
+						</span>
+						<span
+							class="namespacemanager-indicator namespacemanager-indicator--optional"
+						>
+							{{ $i18n( 'namespacemanager-optional' ).text() }}
+						</span>
+						<span
+							v-cdx-tooltip:top="
+								$i18n( 'namespacemanager-talkeditpermissions-help' ).text()
+							"
+							class="namespacemanager-help"
+							tabindex="0"
+							:aria-label="
+								$i18n(
+									'namespacemanager-help-label',
+									$i18n( 'namespacemanager-talkeditpermissions' ).text()
+								).text()
+							"
+						>
+							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+						</span>
 					</template>
 					<cdx-chip-input
 						v-model:input-chips="namespace.talkeditpermissions"
@@ -221,7 +353,8 @@ const {
 	CdxField,
 	CdxIcon,
 	CdxMessage,
-	CdxTextInput
+	CdxTextInput,
+	CdxTooltip
 } = require( '../codex.js' );
 const icons = require( './icons.json' );
 const namespaceUtils = mw.loader.require( 'ext.namespaceManager.utils' );
@@ -239,6 +372,9 @@ module.exports = {
 		CdxIcon,
 		CdxMessage,
 		CdxTextInput
+	},
+	directives: {
+		CdxTooltip
 	},
 	data() {
 		return {

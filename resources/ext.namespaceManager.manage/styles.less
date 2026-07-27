@@ -40,6 +40,45 @@
 	grid-template-columns: repeat( auto-fit, minmax( 14rem, 1fr ) );
 }
 
+.namespacemanager-grid > .cdx-field {
+	margin-top: 0;
+}
+
+.namespacemanager-grid--fields > .cdx-field > .cdx-label {
+	display: flex;
+	align-items: flex-end;
+	block-size: 4rem;
+}
+
+.namespacemanager-grid--fields .cdx-label__label__text {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.namespacemanager-indicator {
+	color: @color-subtle;
+	font-size: 0.875em;
+	font-weight: normal;
+}
+
+.namespacemanager-indicator--required {
+	color: @color-error;
+}
+
+.namespacemanager-help {
+	display: inline-flex;
+	color: @color-progressive;
+	cursor: help;
+	border-radius: @border-radius-base;
+}
+
+.namespacemanager-help:focus-visible {
+	outline: 2px solid @border-color-progressive--focus;
+	outline-offset: 2px;
+}
+
 .namespacemanager-field--error {
 	border-inline-start: 3px solid @border-color-error;
 	padding-inline-start: 0.75rem;
@@ -50,6 +89,10 @@
 }
 
 @media ( max-width: 640px ) {
+	.namespacemanager-grid--fields > .cdx-field > .cdx-label {
+		block-size: auto;
+	}
+
 	.namespacemanager-actions,
 	.namespacemanager-block__heading {
 		align-items: stretch;
