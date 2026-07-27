@@ -30,6 +30,11 @@ assert.strictEqual(
 	'Every non-checkbox input field must have a help tooltip.'
 );
 assert.strictEqual(
+	( source.match( /size="x-small"/g ) || [] ).length,
+	7,
+	'Every help icon must use the compact Codex icon size.'
+);
+assert.strictEqual(
 	( source.match( /namespacemanager-required/g ) || [] ).length,
 	2,
 	'Namespace ID and name must be marked as required.'

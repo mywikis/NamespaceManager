@@ -66,7 +66,10 @@
 								).text()
 							"
 						>
-							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+							<cdx-icon
+								:icon="icons.cdxIconHelp"
+								size="x-small"
+							></cdx-icon>
 						</span>
 					</template>
 					<cdx-text-input
@@ -104,7 +107,10 @@
 								).text()
 							"
 						>
-							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+							<cdx-icon
+								:icon="icons.cdxIconHelp"
+								size="x-small"
+							></cdx-icon>
 						</span>
 					</template>
 					<cdx-text-input
@@ -138,7 +144,10 @@
 								).text()
 							"
 						>
-							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+							<cdx-icon
+								:icon="icons.cdxIconHelp"
+								size="x-small"
+							></cdx-icon>
 						</span>
 					</template>
 					<cdx-text-input
@@ -200,7 +209,10 @@
 								).text()
 							"
 						>
-							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+							<cdx-icon
+								:icon="icons.cdxIconHelp"
+								size="x-small"
+							></cdx-icon>
 						</span>
 					</template>
 					<cdx-chip-input
@@ -235,7 +247,10 @@
 								).text()
 							"
 						>
-							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+							<cdx-icon
+								:icon="icons.cdxIconHelp"
+								size="x-small"
+							></cdx-icon>
 						</span>
 					</template>
 					<cdx-chip-input
@@ -272,7 +287,10 @@
 								).text()
 							"
 						>
-							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+							<cdx-icon
+								:icon="icons.cdxIconHelp"
+								size="x-small"
+							></cdx-icon>
 						</span>
 					</template>
 					<cdx-chip-input
@@ -312,7 +330,10 @@
 								).text()
 							"
 						>
-							<cdx-icon :icon="icons.cdxIconHelp"></cdx-icon>
+							<cdx-icon
+								:icon="icons.cdxIconHelp"
+								size="x-small"
+							></cdx-icon>
 						</span>
 					</template>
 					<cdx-chip-input
