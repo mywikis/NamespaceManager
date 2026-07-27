@@ -1,45 +1,184 @@
 {
-    "name": "NamespaceManager",
-    "version": "0.4.2",
-    "author": [
-            "[https://github.com/mywikis MyWikis LLC]"
-    ],
-    "url": "https://github.com/mywikis/NamespaceManager",
-    "descriptionmsg": "namespacemanager-desc",
-    "license-name": "GPL-2.0",
-    "type": "other",
-    "requires": {
-        "MediaWiki": ">= 1.35.0"
-    },
-    "MessagesDirs": {
-        "NamespaceManager": [
-            "i18n"
-        ]
-    },
-    "Hooks": {
-        "CanonicalNamespaces": "NamespaceManagerHooks::onCanonicalNamespaces",
-        "MediaWikiServices": "NamespaceManagerHooks::onMediaWikiServices"
-    },
-    "AutoloadClasses": {
-        "NamespaceManager": "includes/NamespaceManager.php",
-        "NamespaceManagerHooks": "includes/NamespaceManagerHooks.php",
-        "SpecialManageNamespaces": "includes/SpecialManageNamespaces.php"
-    },
-    "config": {
-        "NamespaceManagerDataPath": {
-            "value": "data/namespaces.json"
-        }
-    },
-    "SpecialPages": {
-        "ManageNamespaces": "SpecialManageNamespaces"
-    },
-    "GroupPermissions": {
-        "sysop": {
-            "managenamespaces": true
-        }
-    },
-    "AvailableRights": [
-        "managenamespaces"
-    ],
-    "manifest_version": 2
+	"name": "NamespaceManager",
+	"version": "2.0.0",
+	"author": [
+		"[https://github.com/mywikis MyWikis LLC]"
+	],
+	"url": "https://github.com/mywikis/NamespaceManager",
+	"descriptionmsg": "namespacemanager-desc",
+	"license-name": "GPL-2.0-only",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.43.0"
+	},
+	"MessagesDirs": {
+		"NamespaceManager": [
+			"i18n"
+		]
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\NamespaceManager\\": "src/"
+	},
+	"ServiceWiringFiles": [
+		"ServiceWiring.php"
+	],
+	"HookHandlers": {
+		"NamespaceManagerBootstrap": {
+			"class": "MediaWiki\\Extension\\NamespaceManager\\Hook\\ServiceBootstrapHook"
+		},
+		"NamespaceManagerHooks": {
+			"class": "MediaWiki\\Extension\\NamespaceManager\\Hook\\NamespaceHooks",
+			"services": [
+				"NamespaceManager.Repository"
+			]
+		},
+		"NamespaceManagerProtection": {
+			"class": "MediaWiki\\Extension\\NamespaceManager\\Hook\\NamespaceProtectionHook",
+			"services": [
+				"NamespaceManager.Repository",
+				"PermissionManager"
+			]
+		},
+		"NamespaceManagerSchema": {
+			"class": "MediaWiki\\Extension\\NamespaceManager\\Hook\\SchemaHook",
+			"factory": "MediaWiki\\Extension\\NamespaceManager\\Hook\\SchemaHook::newFromGlobalState"
+		}
+	},
+	"Hooks": {
+		"CanonicalNamespaces": "NamespaceManagerHooks",
+		"getUserPermissionsErrors": "NamespaceManagerProtection",
+		"LoadExtensionSchemaUpdates": "NamespaceManagerSchema",
+		"MediaWikiServices": "NamespaceManagerBootstrap"
+	},
+	"APIModules": {
+		"namespacemanager": {
+			"class": "MediaWiki\\Extension\\NamespaceManager\\Api\\ApiNamespaceManager",
+			"services": [
+				"NamespaceManager.Manager",
+				"ReadOnlyMode"
+			]
+		}
+	},
+	"SpecialPages": {
+		"ManageNamespaces": {
+			"class": "MediaWiki\\Extension\\NamespaceManager\\SpecialManageNamespaces"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteExtPath": "NamespaceManager/resources"
+	},
+	"ResourceModules": {
+		"ext.namespaceManager.utils": {
+			"packageFiles": [
+				"ext.namespaceManager.manage/namespaceUtils.js"
+			]
+		},
+		"ext.namespaceManager.manage": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxButton",
+				"CdxCheckbox",
+				"CdxChipInput",
+				"CdxField",
+				"CdxIcon",
+				"CdxMessage",
+				"CdxTextInput"
+			],
+			"packageFiles": [
+				"ext.namespaceManager.manage/init.js",
+				"ext.namespaceManager.manage/App.vue",
+				{
+					"name": "ext.namespaceManager.manage/icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconAdd",
+						"cdxIconTrash"
+					]
+				}
+			],
+			"messages": [
+				"namespacemanager-add",
+				"namespacemanager-aliases",
+				"namespacemanager-chip-description",
+				"namespacemanager-content",
+				"namespacemanager-editpermissions",
+				"namespacemanager-empty",
+				"namespacemanager-id",
+				"namespacemanager-includable",
+				"namespacemanager-load-error",
+				"namespacemanager-loading",
+				"namespacemanager-name",
+				"namespacemanager-new-namespace",
+				"namespacemanager-remove",
+				"namespacemanager-save",
+				"namespacemanager-save-error",
+				"namespacemanager-save-success",
+				"namespacemanager-saving",
+				"namespacemanager-searchdefault",
+				"namespacemanager-subpages",
+				"namespacemanager-talkaliases",
+				"namespacemanager-talkeditpermissions",
+				"namespacemanager-talkincludable",
+				"namespacemanager-talkname",
+				"namespacemanager-talkname-help",
+				"namespacemanager-talksearchdefault",
+				"namespacemanager-talksubpages",
+				"namespacemanager-visualeditor",
+				"namespacemanager-error-invalid-id",
+				"namespacemanager-error-invalid-name",
+				"namespacemanager-error-duplicate-id",
+				"namespacemanager-error-duplicate-name",
+				"namespacemanager-error-name-too-long",
+				"namespacemanager-error-field",
+				"namespacemanager-error-summary-item"
+			],
+			"dependencies": [
+				"ext.namespaceManager.utils",
+				"mediawiki.api",
+				"mediawiki.jqueryMsg",
+				"vue"
+			]
+		},
+		"ext.namespaceManager.manage.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexStyleOnly": "true",
+			"codexComponents": [
+				"CdxButton",
+				"CdxCheckbox",
+				"CdxChipInput",
+				"CdxField",
+				"CdxMessage",
+				"CdxTextInput"
+			],
+			"styles": [
+				"ext.namespaceManager.manage/styles.less"
+			]
+		}
+	},
+	"QUnitTestModule": {
+		"localBasePath": "tests/qunit",
+		"remoteExtPath": "NamespaceManager/tests/qunit",
+		"scripts": [
+			"ext.namespaceManager.test.js"
+		],
+		"dependencies": [
+			"ext.namespaceManager.utils"
+		]
+	},
+	"config": {
+		"NamespaceManagerDataPath": {
+			"value": "data/namespaces.json",
+			"description": "Legacy JSON path used only by convertNamespaceJson.php."
+		}
+	},
+	"GroupPermissions": {
+		"sysop": {
+			"managenamespaces": true
+		}
+	},
+	"AvailableRights": [
+		"managenamespaces"
+	],
+	"manifest_version": 2
 }
