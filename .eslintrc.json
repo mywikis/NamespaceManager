@@ -1,0 +1,33 @@
+{
+	"root": true,
+	"extends": [
+		"wikimedia/client/common",
+		"wikimedia/language/es2022",
+		"wikimedia/mediawiki"
+	],
+	"overrides": [
+		{
+			"files": [
+				"**/*.vue"
+			],
+			"extends": [
+				"wikimedia/client/common",
+				"wikimedia/vue3/es6"
+			],
+			"rules": {
+				"vue/component-name-in-template-casing": [
+					"error",
+					"kebab-case"
+				]
+			}
+		},
+		{
+			"files": [
+				"tests/qunit/**/*.js"
+			],
+			"extends": [
+				"wikimedia/qunit"
+			]
+		}
+	]
+}

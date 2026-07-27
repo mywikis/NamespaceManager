@@ -1,0 +1,149 @@
+[
+	{
+		"name": "namespacemanager_namespace",
+		"columns": [
+			{
+				"name": "nsm_id",
+				"type": "integer",
+				"options": {
+					"notnull": true,
+					"unsigned": true
+				}
+			},
+			{
+				"name": "nsm_name",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 255
+				}
+			},
+			{
+				"name": "nsm_talk_name",
+				"type": "binary",
+				"options": {
+					"length": 255,
+					"notnull": false
+				}
+			},
+			{
+				"name": "nsm_content",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "nsm_visual_editor",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "nsm_search_default",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "nsm_talk_search_default",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "nsm_subpages",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "nsm_talk_subpages",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "nsm_includable",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 1
+				}
+			},
+			{
+				"name": "nsm_talk_includable",
+				"type": "mwtinyint",
+				"options": {
+					"notnull": true,
+					"default": 1
+				}
+			},
+			{
+				"name": "nsm_aliases",
+				"type": "blob",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "nsm_talk_aliases",
+				"type": "blob",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "nsm_edit_permissions",
+				"type": "blob",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "nsm_talk_edit_permissions",
+				"type": "blob",
+				"options": {
+					"notnull": true
+				}
+			},
+			{
+				"name": "nsm_updated",
+				"type": "mwtimestamp",
+				"options": {
+					"notnull": true
+				}
+			}
+		],
+		"indexes": [
+			{
+				"name": "namespacemanager_namespace_name",
+				"columns": [
+					"nsm_name"
+				],
+				"unique": true
+			},
+			{
+				"name": "namespacemanager_namespace_talk_name",
+				"columns": [
+					"nsm_talk_name"
+				],
+				"unique": true
+			}
+		],
+		"pk": [
+			"nsm_id"
+		]
+	}
+]
