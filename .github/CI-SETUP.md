@@ -11,7 +11,7 @@
 
 ### 1. Add docker-compose-ci as submodule
 ```bash
-cd /home/greg/src/CrawlerProtection
+cd /home/user/src/NamespaceManager
 
 # Remove build/ from .gitignore if present (it's a submodule now)
 sed -i '/^build\/$/d' .gitignore
@@ -25,7 +25,7 @@ git commit -m "Add docker-compose-ci for local testing"
 ### 2. Initialize submodule (for fresh clones)
 ```bash
 # When cloning the repo in the future, use:
-git clone --recursive https://github.com/freephile/CrawlerProtection.git
+git clone --recursive https://github.com/mywikis/NamespaceManager.git
 
 # Or if already cloned without --recursive:
 git submodule update --init --recursive
@@ -96,7 +96,7 @@ Create `.env` file to customize:
 MW_VERSION=1.43
 PHP_VERSION=8.2
 DB_TYPE=sqlite
-EXTENSION=CrawlerProtection
+EXTENSION=NamespaceManager
 ```
 
 ## ⚡ Quick Fixes Before Commit
@@ -135,10 +135,10 @@ Your `.github/workflows/ci.yml` already exists and will run automatically on:
 - Pushes to `main` or `specialPageList` branches
 - All pull requests
 
-Check results at: https://github.com/freephile/CrawlerProtection/actions
+Check results at: https://github.com/mywikis/NamespaceManager/actions
 
 ## 🔗 Resources
 
 - [docker-compose-ci documentation](https://github.com/gesinn-it-pub/docker-compose-ci)
 - [MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions)
-- Your GitHub Actions: https://github.com/freephile/CrawlerProtection/actions
+- Your GitHub Actions: https://github.com/mywikis/NamespaceManager/actions

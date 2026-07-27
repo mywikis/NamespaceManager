@@ -53,4 +53,4 @@ git submodule update --init --remote    # Update docker-compose-ci
 
 - Full docs: `.github/CI-SETUP.md`
 - Testing guide: `TESTING.md`
-- Your CI runs: https://github.com/freephile/CrawlerProtection/actions
+- Your CI runs: https://github.com/mywikis/NamespaceManager/actions
