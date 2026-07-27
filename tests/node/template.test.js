@@ -24,6 +24,17 @@ const source = fs.readFileSync(
 	assert.match( source, new RegExp( `<${ component }(?:\\s|>)` ) );
 } );
 assert.doesNotMatch( source, /<Cdx[A-Z]/ );
+assert.match( source, /module\.exports = defineComponent\( \{/ );
+const fieldTemplates = source.split( '<cdx-field' ).slice( 1 );
+assert.strictEqual( fieldTemplates.length, 7 );
+fieldTemplates.forEach( ( fieldTemplate ) => {
+	const controlIndex = fieldTemplate.search( /<cdx-(?:text|chip)-input/ );
+	const labelIndex = fieldTemplate.indexOf( '<template #label>' );
+	assert.ok( controlIndex !== -1 && controlIndex < labelIndex );
+} );
+assert.strictEqual( ( source.match( /:status="fieldStatus/g ) || [] ).length, 7 );
+assert.strictEqual( ( source.match( /:messages="fieldMessages/g ) || [] ).length, 7 );
+assert.strictEqual( ( source.match( /<template #description>/g ) || [] ).length, 7 );
 assert.strictEqual(
 	( source.match( /v-cdx-tooltip:top/g ) || [] ).length,
 	7,

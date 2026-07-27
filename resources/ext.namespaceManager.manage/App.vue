@@ -48,8 +48,19 @@
 					:disabled="editingDisabled"
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'id' ) }"
 				>
+					<cdx-text-input
+						v-model="namespace.id"
+						input-type="number"
+						:min="3000"
+						:max="4998"
+						:step="2"
+						required
+						@update:model-value="onBasicFieldChange( index, 'id' )"
+					></cdx-text-input>
 					<template #label>
-						<span>{{ $i18n( 'namespacemanager-id' ).text() }}</span>
+						{{ $i18n( 'namespacemanager-id' ).text() }}
+					</template>
+					<template #description>
 						<span
 							class="namespacemanager-indicator namespacemanager-indicator--required"
 						>
@@ -72,16 +83,6 @@
 							></cdx-icon>
 						</span>
 					</template>
-					<cdx-text-input
-						v-model="namespace.id"
-						input-type="number"
-						:min="3000"
-						:max="4998"
-						:step="2"
-						required
-						:status="fieldStatus( index, 'id' )"
-						@update:model-value="onBasicFieldChange( index, 'id' )"
-					></cdx-text-input>
 				</cdx-field>
 				<cdx-field
 					:status="fieldStatus( index, 'name' )"
@@ -89,8 +90,15 @@
 					:disabled="editingDisabled"
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'name' ) }"
 				>
+					<cdx-text-input
+						v-model="namespace.name"
+						required
+						@update:model-value="onBasicFieldChange( index, 'name' )"
+					></cdx-text-input>
 					<template #label>
-						<span>{{ $i18n( 'namespacemanager-name' ).text() }}</span>
+						{{ $i18n( 'namespacemanager-name' ).text() }}
+					</template>
+					<template #description>
 						<span
 							class="namespacemanager-indicator namespacemanager-indicator--required"
 						>
@@ -113,12 +121,6 @@
 							></cdx-icon>
 						</span>
 					</template>
-					<cdx-text-input
-						v-model="namespace.name"
-						required
-						:status="fieldStatus( index, 'name' )"
-						@update:model-value="onBasicFieldChange( index, 'name' )"
-					></cdx-text-input>
 				</cdx-field>
 				<cdx-field
 					:status="fieldStatus( index, 'talkname' )"
@@ -126,8 +128,11 @@
 					:disabled="editingDisabled"
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'talkname' ) }"
 				>
+					<cdx-text-input v-model="namespace.talkname"></cdx-text-input>
 					<template #label>
-						<span>{{ $i18n( 'namespacemanager-talkname' ).text() }}</span>
+						{{ $i18n( 'namespacemanager-talkname' ).text() }}
+					</template>
+					<template #description>
 						<span
 							class="namespacemanager-indicator namespacemanager-indicator--optional"
 						>
@@ -150,10 +155,6 @@
 							></cdx-icon>
 						</span>
 					</template>
-					<cdx-text-input
-						v-model="namespace.talkname"
-						:status="fieldStatus( index, 'talkname' )"
-					></cdx-text-input>
 				</cdx-field>
 			</div>
 
@@ -191,8 +192,14 @@
 					:disabled="editingDisabled"
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'aliases' ) }"
 				>
+					<cdx-chip-input
+						v-model:input-chips="namespace.aliases"
+						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
+					></cdx-chip-input>
 					<template #label>
-						<span>{{ $i18n( 'namespacemanager-aliases' ).text() }}</span>
+						{{ $i18n( 'namespacemanager-aliases' ).text() }}
+					</template>
+					<template #description>
 						<span
 							class="namespacemanager-indicator namespacemanager-indicator--optional"
 						>
@@ -215,11 +222,6 @@
 							></cdx-icon>
 						</span>
 					</template>
-					<cdx-chip-input
-						v-model:input-chips="namespace.aliases"
-						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
-						:status="fieldStatus( index, 'aliases' )"
-					></cdx-chip-input>
 				</cdx-field>
 				<cdx-field
 					:status="fieldStatus( index, 'talkaliases' )"
@@ -227,8 +229,14 @@
 					:disabled="editingDisabled"
 					:class="{ 'namespacemanager-field--error': fieldError( index, 'talkaliases' ) }"
 				>
+					<cdx-chip-input
+						v-model:input-chips="namespace.talkaliases"
+						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
+					></cdx-chip-input>
 					<template #label>
-						<span>{{ $i18n( 'namespacemanager-talkaliases' ).text() }}</span>
+						{{ $i18n( 'namespacemanager-talkaliases' ).text() }}
+					</template>
+					<template #description>
 						<span
 							class="namespacemanager-indicator namespacemanager-indicator--optional"
 						>
@@ -253,11 +261,6 @@
 							></cdx-icon>
 						</span>
 					</template>
-					<cdx-chip-input
-						v-model:input-chips="namespace.talkaliases"
-						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
-						:status="fieldStatus( index, 'talkaliases' )"
-					></cdx-chip-input>
 				</cdx-field>
 				<cdx-field
 					:status="fieldStatus( index, 'editpermissions' )"
@@ -267,8 +270,14 @@
 						'namespacemanager-field--error': fieldError( index, 'editpermissions' )
 					}"
 				>
+					<cdx-chip-input
+						v-model:input-chips="namespace.editpermissions"
+						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
+					></cdx-chip-input>
 					<template #label>
-						<span>{{ $i18n( 'namespacemanager-editpermissions' ).text() }}</span>
+						{{ $i18n( 'namespacemanager-editpermissions' ).text() }}
+					</template>
+					<template #description>
 						<span
 							class="namespacemanager-indicator namespacemanager-indicator--optional"
 						>
@@ -293,11 +302,6 @@
 							></cdx-icon>
 						</span>
 					</template>
-					<cdx-chip-input
-						v-model:input-chips="namespace.editpermissions"
-						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
-						:status="fieldStatus( index, 'editpermissions' )"
-					></cdx-chip-input>
 				</cdx-field>
 				<cdx-field
 					:status="fieldStatus( index, 'talkeditpermissions' )"
@@ -308,10 +312,14 @@
 							fieldError( index, 'talkeditpermissions' )
 					}"
 				>
+					<cdx-chip-input
+						v-model:input-chips="namespace.talkeditpermissions"
+						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
+					></cdx-chip-input>
 					<template #label>
-						<span>
-							{{ $i18n( 'namespacemanager-talkeditpermissions' ).text() }}
-						</span>
+						{{ $i18n( 'namespacemanager-talkeditpermissions' ).text() }}
+					</template>
+					<template #description>
 						<span
 							class="namespacemanager-indicator namespacemanager-indicator--optional"
 						>
@@ -336,11 +344,6 @@
 							></cdx-icon>
 						</span>
 					</template>
-					<cdx-chip-input
-						v-model:input-chips="namespace.talkeditpermissions"
-						:chip-aria-description="$i18n( 'namespacemanager-chip-description' ).text()"
-						:status="fieldStatus( index, 'talkeditpermissions' )"
-					></cdx-chip-input>
 				</cdx-field>
 			</div>
 		</section>
@@ -367,6 +370,7 @@
 </template>
 
 <script>
+const { defineComponent } = require( 'vue' );
 const {
 	CdxButton,
 	CdxCheckbox,
@@ -383,7 +387,7 @@ const namespaceUtils = mw.loader.require( 'ext.namespaceManager.utils' );
 let nextKey = 1;
 
 // @vue/component
-module.exports = {
+module.exports = defineComponent( {
 	name: 'NamespaceManagerApp',
 	components: {
 		CdxButton,
@@ -639,5 +643,5 @@ module.exports = {
 	mounted() {
 		this.load();
 	}
-};
+} );
 </script>
