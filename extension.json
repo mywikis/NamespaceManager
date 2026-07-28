@@ -175,7 +175,7 @@
 			"ext.namespaceManager.test.js"
 		],
 		"dependencies": [
-			"ext.namespaceManager.utils"
+			"ext.namespaceManager.manage"
 		]
 	},
 	"config": {
