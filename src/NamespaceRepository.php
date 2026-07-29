@@ -113,7 +113,6 @@ class NamespaceRepository {
 
 	public function invalidate(): void {
 		$this->cache->touchCheckKey( $this->getCheckKey() );
-		$this->cache->delete( $this->getCacheKey() );
 		$this->loaded = false;
 		$this->memoizedDefinitions = [];
 	}
