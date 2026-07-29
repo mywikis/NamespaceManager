@@ -72,9 +72,12 @@ class NamespaceRepositoryTest extends MediaWikiIntegrationTestCase {
 
 	public function testInvalidationRejectsConcurrentStaleCacheFill(): void {
 		$cache = new WANObjectCache( [ 'cache' => new HashBagOStuff() ] );
+		$mockTime = 1_700_000_000.0;
+		$cache->setMockTime( $mockTime );
 		$repository = $this->newCacheOnlyRepository( $cache );
 		$key = $cache->makeKey( 'namespacemanager', 'definitions' );
 		$checkKey = $cache->makeKey( 'namespacemanager', 'definitions', 'check' );
+		$options = $this->getCacheOptions( $checkKey );
 
 		$stale = $cache->getWithSetCallback(
 			$key,
@@ -83,8 +86,9 @@ class NamespaceRepositoryTest extends MediaWikiIntegrationTestCase {
 				$repository->invalidate();
 				return 'stale';
 			},
-			[ 'checkKeys' => [ $checkKey ] ]
+			$options
 		);
+		$cache->setMockTime( $mockTime + 20 );
 		$regenerations = 0;
 		$fresh = $cache->getWithSetCallback(
 			$key,
@@ -93,7 +97,7 @@ class NamespaceRepositoryTest extends MediaWikiIntegrationTestCase {
 				$regenerations++;
 				return 'fresh';
 			},
-			[ 'checkKeys' => [ $checkKey ] ]
+			$options
 		);
 
 		$this->assertSame( 'stale', $stale );
@@ -108,15 +112,9 @@ class NamespaceRepositoryTest extends MediaWikiIntegrationTestCase {
 		$repository = $this->newCacheOnlyRepository( $writerCache );
 		$key = $readerCache->makeKey( 'namespacemanager', 'definitions' );
 		$checkKey = $readerCache->makeKey( 'namespacemanager', 'definitions', 'check' );
-		$options = [ 'checkKeys' => [ $checkKey ] ];
+		$options = $this->getCacheOptions( $checkKey );
 		$regenerations = 0;
 
-		$readerCache->getWithSetCallback(
-			$key,
-			WANObjectCache::TTL_WEEK,
-			static fn (): string => 'stale',
-			$options
-		);
 		$cacheBag->afterNextSet(
 			static function () use (
 				$readerCache,
@@ -149,6 +147,18 @@ class NamespaceRepositoryTest extends MediaWikiIntegrationTestCase {
 
 		$this->assertSame( 'fresh', $value );
 		$this->assertSame( 1, $regenerations );
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	private function getCacheOptions( string $checkKey ): array {
+		return [
+			'checkKeys' => [ $checkKey ],
+			'hotTTR' => WANObjectCache::TTL_HOUR,
+			'lockTSE' => 30,
+			'version' => 1,
+		];
 	}
 
 	private function newCacheOnlyRepository( WANObjectCache $cache ): NamespaceRepository {
