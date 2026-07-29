@@ -1,5 +1,10 @@
 {
 	"root": true,
+	"ignorePatterns": [
+		"tests/e2e/.auth/",
+		"tests/e2e/report/",
+		"tests/e2e/test-results/"
+	],
 	"extends": [
 		"wikimedia/client/common",
 		"wikimedia/language/es2022",
@@ -28,6 +33,30 @@
 			"extends": [
 				"wikimedia/qunit"
 			]
+		},
+		{
+			"files": [
+				"tests/e2e/**/*.js"
+			],
+			"extends": [
+				"wikimedia/server",
+				"wikimedia/language/es2022"
+			],
+			"globals": {
+				"mw": "readonly"
+			},
+			"rules": {
+				"jsdoc/no-undefined-types": [
+					"warn",
+					{
+						"definedTypes": [
+							"APIRequestContext",
+							"Locator",
+							"Page"
+						]
+					}
+				]
+			}
 		}
 	]
 }

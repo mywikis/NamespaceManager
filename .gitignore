@@ -2,3 +2,6 @@ data/namespaces_*.json
 node_modules/
 vendor/
 .DS_Store
+tests/e2e/.auth/
+tests/e2e/report/
+tests/e2e/test-results/

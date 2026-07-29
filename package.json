@@ -2,12 +2,14 @@
 	"name": "mediawiki-extension-namespacemanager",
 	"private": true,
 	"scripts": {
-		"lint:js": "eslint resources tests/qunit",
+		"lint:js": "eslint resources tests/qunit tests/e2e",
 		"lint:styles": "stylelint \"resources/**/*.less\"",
+		"test:e2e": "playwright test --config tests/e2e/playwright.config.js",
 		"test:templates": "node tests/node/template.test.js",
 		"test": "npm run lint:js && npm run lint:styles && npm run test:templates"
 	},
 	"devDependencies": {
+		"@playwright/test": "1.62.0",
 		"eslint": "8.57.1",
 		"eslint-config-wikimedia": "0.32.4",
 		"stylelint": "17.6.0",
