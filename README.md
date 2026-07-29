@@ -73,7 +73,7 @@ of truth.
 Definitions are memoized within the request and cached through
 `WANObjectCache`, including process caching, hot refresh, stampede protection,
 and a cross-server check key. Saves replace the complete definition set in one
-database transaction and invalidate both the check key and cached value.
+database transaction and invalidate the check key.
 Primary-database reads are used when regenerating the cache because replica lag
 must not temporarily change title interpretation.
 
