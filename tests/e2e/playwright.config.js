@@ -6,7 +6,7 @@ const config = require( './support/config.js' );
 
 module.exports = defineConfig( {
 	testDir: path.join( __dirname, 'specs' ),
-	outputDir: path.join( __dirname, 'test-results' ),
+	outputDir: path.join( __dirname, process.env.E2E_RESULTS_DIR || 'test-results' ),
 	globalSetup: require.resolve( './support/globalSetup' ),
 	// Saving the namespace configuration replaces the whole wiki configuration,
 	// so the tests must not run concurrently against the same wiki.
@@ -19,7 +19,10 @@ module.exports = defineConfig( {
 	reporter: process.env.CI ?
 		[
 			[ 'list' ],
-			[ 'html', { open: 'never', outputFolder: path.join( __dirname, 'report' ) } ]
+			[ 'html', {
+				open: 'never',
+				outputFolder: path.join( __dirname, process.env.E2E_REPORT_DIR || 'report' )
+			} ]
 		] :
 		[ [ 'list' ] ],
 	use: {

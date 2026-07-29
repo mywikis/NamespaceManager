@@ -109,6 +109,53 @@ async function namespaceInfo( request ) {
 
 /**
  * @param {APIRequestContext} request
+ * @return {Promise<Array>} The namespace definitions stored by the extension.
+ */
+async function storedNamespaces( request ) {
+	const data = await apiPost( request, {
+		action: 'namespacemanager',
+		operation: 'get'
+	} );
+	expect( data.error, JSON.stringify( data.error ) ).toBeUndefined();
+	return data.namespacemanager.namespaces;
+}
+
+/**
+ * @param {APIRequestContext} request
+ * @param {string} name Name of the extension, as reported by the API.
+ * @return {Promise<boolean>} Whether that extension is installed on the wiki.
+ */
+async function isExtensionInstalled( request, name ) {
+	const data = await apiGet( request, {
+		action: 'query',
+		meta: 'siteinfo',
+		siprop: 'extensions'
+	} );
+	return data.query.extensions.some( ( extension ) => extension.name === name );
+}
+
+/**
+ * Determine whether VisualEditor is installed, and check that against the
+ * expectation given through `E2E_VISUALEDITOR`, if any.
+ *
+ * @param {APIRequestContext} request
+ * @return {Promise<boolean>} Whether VisualEditor is installed on the wiki.
+ */
+async function isVisualEditorInstalled( request ) {
+	const installed = await isExtensionInstalled( request, 'VisualEditor' );
+	if ( config.expectVisualEditor !== null ) {
+		expect(
+			installed,
+			config.expectVisualEditor ?
+				'VisualEditor was expected to be installed on the wiki under test.' :
+				'VisualEditor was expected to be absent from the wiki under test.'
+		).toBe( config.expectVisualEditor );
+	}
+	return installed;
+}
+
+/**
+ * @param {APIRequestContext} request
  * @return {Promise<Object>} Preferences of the logged-in user.
  */
 async function userOptions( request ) {
@@ -140,8 +187,11 @@ module.exports = {
 	apiUrl,
 	articleUrl,
 	indexUrl,
+	isExtensionInstalled,
+	isVisualEditorInstalled,
 	login,
 	namespaceInfo,
 	resetNamespaces,
+	storedNamespaces,
 	userOptions
 };

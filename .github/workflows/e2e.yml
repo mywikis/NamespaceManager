@@ -105,8 +105,48 @@ jobs:
           echo "The wiki did not become available." >&2
           exit 1
 
-      - name: Run the end-to-end tests
+      - name: Disable VisualEditor
+        run: |
+          canasta extension disable VisualEditor \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID" || true
+
+      - name: Run the end-to-end tests without VisualEditor
         working-directory: NamespaceManager
+        env:
+          E2E_VISUALEDITOR: '0'
+          E2E_REPORT_DIR: report/without-visualeditor
+          E2E_RESULTS_DIR: test-results/without-visualeditor
+        run: npm run test:e2e
+
+      - name: Enable VisualEditor
+        run: |
+          canasta extension enable VisualEditor \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID"
+          canasta maintenance update \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID" \
+            --skip-jobs
+
+      - name: Wait for the wiki to answer again
+        run: |
+          for _ in $(seq 1 60); do
+            if curl -fsS "$E2E_BASE_URL/w/api.php?action=query&meta=siteinfo&format=json" \
+              > /dev/null; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "The wiki did not become available." >&2
+          exit 1
+
+      - name: Run the end-to-end tests with VisualEditor
+        working-directory: NamespaceManager
+        env:
+          E2E_VISUALEDITOR: '1'
+          E2E_REPORT_DIR: report/with-visualeditor
+          E2E_RESULTS_DIR: test-results/with-visualeditor
         run: npm run test:e2e
 
       - name: Collect wiki logs

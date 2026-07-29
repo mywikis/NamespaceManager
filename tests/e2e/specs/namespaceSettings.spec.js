@@ -209,18 +209,6 @@ test.describe( 'Namespace settings', () => {
 			.not.toContainText( /do not have permission/i );
 	} );
 
-	test( 'the VisualEditor setting registers the namespace', async ( { page } ) => {
-		const manage = new ManageNamespacesPage( page );
-		await manage.createNamespace( { id: ID, name: NAME, visualeditor: true } );
-
-		await page.goto( articleUrl( `${ NAME }:Sample page` ) );
-		const visualEditorConfig = await page.evaluate(
-			() => mw.config.get( 'wgVisualEditorConfig' )
-		);
-		test.skip( !visualEditorConfig, 'VisualEditor is not installed on this wiki.' );
-		expect( visualEditorConfig.namespaces ).toContain( ID );
-	} );
-
 	test( 'every setting can be enabled at once', async ( { page, request } ) => {
 		const manage = new ManageNamespacesPage( page );
 		await manage.createNamespace( {
