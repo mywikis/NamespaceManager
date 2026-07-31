@@ -1,6 +1,6 @@
 {
 	"name": "NamespaceManager",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"author": [
 		"[https://github.com/mywikis MyWikis LLC]"
 	],
@@ -18,6 +18,9 @@
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\NamespaceManager\\": "src/"
+	},
+	"TestAutoloadClasses": {
+		"MediaWiki\\Extension\\NamespaceManager\\Tests\\Integration\\CallbackHashBagOStuff": "tests/phpunit/integration/CallbackHashBagOStuff.php"
 	},
 	"ServiceWiringFiles": [
 		"ServiceWiring.php"
