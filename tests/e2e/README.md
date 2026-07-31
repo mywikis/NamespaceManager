@@ -15,6 +15,11 @@ suite is run twice: once with VisualEditor disabled and once with VisualEditor
 enabled through `canasta extension enable VisualEditor`, so that both
 situations are covered.
 
+The Canasta CLI is installed with [`get-canasta.sh`](get-canasta.sh), a
+vendored copy of the installer published at <https://get.canasta.wiki>. It is
+kept in the repository so that the workflow does not depend on that host being
+reachable; refresh it from upstream when the installer changes.
+
 ## Running the tests locally
 
 Node.js 20 or later is required, as that is the minimum version supported by
@@ -23,7 +28,7 @@ Node.js 20 or later is required, as that is the minimum version supported by
 1. Create a Canasta wiki and install the extension into it:
 
    ```sh
-   curl -fsSL https://get.canasta.wiki | bash -s -- --docker
+   bash /path/to/NamespaceManager/tests/e2e/get-canasta.sh --docker
    printf 'HTTP_PORT=8080\nHTTPS_PORT=8443\nCADDY_AUTO_HTTPS=off\n' > canasta.env
    canasta create --id namespacemanager-e2e --wiki main \
        --domain-name localhost --envfile canasta.env \
