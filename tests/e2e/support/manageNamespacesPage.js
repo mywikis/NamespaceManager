@@ -66,9 +66,13 @@ class ManageNamespacesPage {
 	 * @return {Locator}
 	 */
 	textInput( index, field ) {
+		const position = TEXT_FIELDS.indexOf( field );
+		if ( position === -1 ) {
+			throw new Error( `Unknown text field: ${ field }` );
+		}
 		return this.block( index )
 			.locator( '.cdx-text-input__input' )
-			.nth( TEXT_FIELDS.indexOf( field ) );
+			.nth( position );
 	}
 
 	/**
@@ -77,9 +81,13 @@ class ManageNamespacesPage {
 	 * @return {Locator}
 	 */
 	chipInput( index, field ) {
+		const position = CHIP_FIELDS.indexOf( field );
+		if ( position === -1 ) {
+			throw new Error( `Unknown chip field: ${ field }` );
+		}
 		return this.block( index )
 			.locator( '.cdx-chip-input' )
-			.nth( CHIP_FIELDS.indexOf( field ) );
+			.nth( position );
 	}
 
 	/**

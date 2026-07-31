@@ -88,6 +88,7 @@ async function apiPost( request, params ) {
 			params
 		)
 	} );
+	expect( response.ok(), `API request failed: ${ response.status() }` ).toBeTruthy();
 	return response.json();
 }
 

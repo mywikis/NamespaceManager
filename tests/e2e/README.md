@@ -17,6 +17,9 @@ situations are covered.
 
 ## Running the tests locally
 
+Node.js 20 or later is required, as that is the minimum version supported by
+`@playwright/test`.
+
 1. Create a Canasta wiki and install the extension into it:
 
    ```sh
