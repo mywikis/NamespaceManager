@@ -35,6 +35,11 @@ Node.js 20 or later is required, as that is the minimum version supported by
    canasta maintenance update --id namespacemanager-e2e --wiki main
    ```
 
+   `canasta restart` returns before the database container accepts
+   connections, so wait until `http://localhost:8080/w/api.php` answers before
+   running `canasta maintenance update`, otherwise the schema update fails with
+   a connection error.
+
 2. Install the browser and run the tests:
 
    ```sh
