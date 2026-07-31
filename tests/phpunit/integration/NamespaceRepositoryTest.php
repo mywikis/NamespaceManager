@@ -88,7 +88,7 @@ class NamespaceRepositoryTest extends MediaWikiIntegrationTestCase {
 			},
 			$options
 		);
-		$cache->setMockTime( $mockTime + 20 );
+		$mockTime += 20;
 		$regenerations = 0;
 		$fresh = $cache->getWithSetCallback(
 			$key,
@@ -191,32 +191,5 @@ class NamespaceRepositoryTest extends MediaWikiIntegrationTestCase {
 				'talkeditpermissions' => [ 'propertymanagers' ],
 			],
 		];
-	}
-}
-
-class CallbackHashBagOStuff extends HashBagOStuff {
-
-	/** @var callable|null */
-	private $afterNextSet;
-
-	public function afterNextSet( callable $callback ): void {
-		$this->afterNextSet = $callback;
-	}
-
-	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @param int $exptime
-	 * @param int $flags
-	 * @return bool
-	 */
-	protected function doSet( $key, $value, $exptime = 0, $flags = 0 ) {
-		$result = parent::doSet( $key, $value, $exptime, $flags );
-		if ( $this->afterNextSet !== null ) {
-			$callback = $this->afterNextSet;
-			$this->afterNextSet = null;
-			$callback();
-		}
-		return $result;
 	}
 }
