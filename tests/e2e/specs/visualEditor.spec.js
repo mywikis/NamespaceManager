@@ -12,6 +12,8 @@ const {
 
 const ID = 3010;
 const NAME = 'E2E VisualEditor';
+// Namespace names are stored and shown with underscores instead of spaces.
+const STORED_NAME = NAME.replace( / /g, '_' );
 
 /**
  * @param {Page} page
@@ -90,13 +92,13 @@ test.describe( 'VisualEditor setting', () => {
 			expect( definitions ).toHaveLength( 1 );
 			expect( definitions[ 0 ] ).toMatchObject( {
 				id: ID,
-				name: NAME,
+				name: STORED_NAME,
 				visualeditor: true
 			} );
 
 			await manage.open();
 			expect( await manage.readNamespace( 0 ) ).toMatchObject( {
-				name: NAME,
+				name: STORED_NAME,
 				visualeditor: true
 			} );
 		} );

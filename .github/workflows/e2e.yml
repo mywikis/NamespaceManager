@@ -100,9 +100,16 @@ jobs:
             --exclude tests/e2e/test-results \
             "$GITHUB_WORKSPACE/NamespaceManager/" \
             "$instance/extensions/NamespaceManager/"
-          cat > "$instance/config/settings/global/50-NamespaceManager.php" <<'SETTINGS'
+          # Canasta loads the files in config/settings/global in alphabetical order,
+          # so the name has to sort after DefaultSettings.php to be able to override
+          # the settings made there.
+          cat > "$instance/config/settings/global/zz-NamespaceManager.php" <<'SETTINGS'
           <?php
           wfLoadExtension( 'NamespaceManager' );
+          // Canasta wikis are private by default, which would make anonymous users
+          // hit the generic login notice instead of the permission error that the
+          // access control tests assert on.
+          $wgGroupPermissions['*']['read'] = true;
           SETTINGS
           canasta restart --id "$CANASTA_INSTANCE_ID"
 

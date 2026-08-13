@@ -48,7 +48,6 @@ class NamespaceRepository {
 				'checkKeys' => [ $this->getCheckKey() ],
 				'hotTTR' => WANObjectCache::TTL_HOUR,
 				'lockTSE' => 30,
-				'version' => self::CACHE_VERSION,
 			]
 		);
 
@@ -88,9 +87,12 @@ class NamespaceRepository {
 			throw $e;
 		}
 
+		// Readers that run before the transaction is committed must not cache the
+		// pre-write state for a week, so the cache is purged right away as well.
+		$this->invalidate();
 		$dbw->onTransactionCommitOrIdle(
 			function (): void {
-				$this->invalidate();
+				$this->refresh();
 			},
 			__METHOD__
 		);
@@ -109,6 +111,27 @@ class NamespaceRepository {
 			->limit( 1 )
 			->caller( __METHOD__ )
 			->fetchField();
+	}
+
+	/**
+	 * Purge the cached definitions and repopulate the cache from the database.
+	 *
+	 * Purging on its own does not guarantee that the very next request sees the new
+	 * definitions: check key timestamps only have a one second resolution, and values
+	 * cached within the last few milliseconds are reused regardless of any purge. The
+	 * stored definitions are therefore written back to the cache so that even a value
+	 * that escapes the purge holds the new state.
+	 */
+	private function refresh(): void {
+		$this->invalidate();
+		$definitions = $this->loadFromDatabase();
+		$this->cache->set(
+			$this->getCacheKey(),
+			$definitions,
+			WANObjectCache::TTL_WEEK
+		);
+		$this->memoizedDefinitions = $definitions;
+		$this->loaded = true;
 	}
 
 	public function invalidate(): void {
@@ -232,6 +255,12 @@ class NamespaceRepository {
 	}
 
 	private function getCacheKey(): string {
-		return $this->cache->makeKey( 'namespacemanager', 'definitions' );
+		// The version is part of the key rather than a "version" cache option so that
+		// the cached value can be replaced with a plain set() in refresh().
+		return $this->cache->makeKey(
+			'namespacemanager',
+			'definitions',
+			'v' . self::CACHE_VERSION
+		);
 	}
 }

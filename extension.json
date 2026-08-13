@@ -19,9 +19,6 @@
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\NamespaceManager\\": "src/"
 	},
-	"TestAutoloadClasses": {
-		"MediaWiki\\Extension\\NamespaceManager\\Tests\\Integration\\CallbackHashBagOStuff": "tests/phpunit/integration/CallbackHashBagOStuff.php"
-	},
 	"ServiceWiringFiles": [
 		"ServiceWiring.php"
 	],
