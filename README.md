@@ -107,3 +107,14 @@ Run extension tests from a MediaWiki checkout:
 ```sh
 vendor/bin/phpunit extensions/NamespaceManager/tests/phpunit
 ```
+
+Run the browser-based end-to-end tests against a wiki that has the extension
+installed:
+
+```sh
+npx playwright install --with-deps chromium
+npm run test:e2e
+```
+
+See [tests/e2e/README.md](tests/e2e/README.md) for how the wiki under test is
+created; the same suite runs on every pull request to `main`.
