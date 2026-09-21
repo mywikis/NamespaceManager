@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"namespacemanager-desc": "Создавање на и управување со именски простори напосредно од вашето вики",
+	"managenamespaces": "Управување со именски простори",
+	"managenamespaces-title": "Управување со именски простори",
+	"managenamespaces-intro": "Додајте, менувајте или отстранувајте прилагодени именски простори. Промените се применуваат на понатамошни барања.",
+	"action-managenamespaces": "управување со именски простори на вики",
+	"right-managenamespaces": "Управување со именски простори на вики",
+	"namespacemanager-javascript-required": "За управување со именски простори потребен е JavaScript.",
+	"namespacemanager-loading": "Вчитувам именски простори…",
+	"namespacemanager-load-error": "Не можев да ги вчитам именските простори.",
+	"namespacemanager-empty": "Не се поставени прилагодени именски простори.",
+	"namespacemanager-new-namespace": "Нов именски простор",
+	"namespacemanager-add": "Додај именски простор",
+	"namespacemanager-remove": "Отстрани именски простор",
+	"namespacemanager-save": "Зачувај именски простори",
+	"namespacemanager-saving": "Зачувувам…",
+	"namespacemanager-save-success": "Поставката на именски простори е зачувана.",
+	"namespacemanager-id": "Назнака на именскиот простор",
+	"namespacemanager-name": "Име",
+	"namespacemanager-help-label": "Помош за $1",
+	"namespacemanager-required": "(задолжително)",
+	"namespacemanager-optional": "(незадолжително)",
+	"namespacemanager-content": "Содржински именски простор",
+	"namespacemanager-visualeditor": "Овозможи Нагледен уредник",
+	"namespacemanager-searchdefault": "Пребарај по основно"
+}
