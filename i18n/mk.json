@@ -20,6 +20,7 @@
 	"namespacemanager-save": "Зачувај именски простори",
 	"namespacemanager-saving": "Зачувувам…",
 	"namespacemanager-save-success": "Поставката на именски простори е зачувана.",
+	"namespacemanager-save-error": "Поставката за именски простори не беше зачувана. Исправете ги истакнатите полиња и пробајте повторно.",
 	"namespacemanager-id": "Назнака на именскиот простор",
 	"namespacemanager-name": "Име",
 	"namespacemanager-help-label": "Помош за $1",
