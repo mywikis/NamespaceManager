@@ -1,0 +1,184 @@
+name: End-to-end tests
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CANASTA_INSTANCE_ID: namespacemanager-e2e
+  CANASTA_WIKI_ID: main
+  E2E_ADMIN_USER: Admin
+  E2E_BASE_URL: http://localhost:8080
+
+jobs:
+  e2e:
+    name: Canasta end-to-end tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out extension
+        uses: actions/checkout@v4
+        with:
+          path: NamespaceManager
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: NamespaceManager/package-lock.json
+
+      - name: Install Node dependencies
+        working-directory: NamespaceManager
+        run: npm ci
+
+      - name: Install Playwright browser
+        working-directory: NamespaceManager
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate the wiki administrator password
+        run: |
+          password="$(openssl rand -hex 16)"
+          echo "::add-mask::${password}"
+          echo "E2E_ADMIN_PASSWORD=${password}" >> "$GITHUB_ENV"
+
+      - name: Write the wiki readiness helper
+        run: |
+          cat > "$RUNNER_TEMP/wait-for-wiki.sh" <<'SCRIPT'
+          #!/bin/bash
+          for _ in $(seq 1 60); do
+            if curl -fsS "$E2E_BASE_URL/w/api.php?action=query&meta=siteinfo&format=json" \
+              > /dev/null; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "The wiki did not become available." >&2
+          exit 1
+          SCRIPT
+          chmod +x "$RUNNER_TEMP/wait-for-wiki.sh"
+
+      - name: Install the Canasta CLI
+        working-directory: NamespaceManager
+        run: |
+          bash tests/e2e/get-canasta.sh --docker
+          canasta version --cli-only
+
+      - name: Create the Canasta wiki
+        run: |
+          mkdir -p "$RUNNER_TEMP/canasta"
+          cat > "$RUNNER_TEMP/canasta.env" <<'ENVFILE'
+          HTTP_PORT=8080
+          HTTPS_PORT=8443
+          CADDY_AUTO_HTTPS=off
+          ENVFILE
+          canasta create \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID" \
+            --site-name "NamespaceManager E2E" \
+            --domain-name localhost \
+            --path "$RUNNER_TEMP/canasta" \
+            --envfile "$RUNNER_TEMP/canasta.env" \
+            --admin "$E2E_ADMIN_USER" \
+            --password "$E2E_ADMIN_PASSWORD"
+
+      - name: Install NamespaceManager into the wiki
+        run: |
+          instance="$RUNNER_TEMP/canasta/$CANASTA_INSTANCE_ID"
+          mkdir -p "$instance/extensions" "$instance/config/settings/global"
+          rsync -a --exclude node_modules --exclude .git \
+            --exclude tests/e2e/.auth --exclude tests/e2e/report \
+            --exclude tests/e2e/test-results \
+            "$GITHUB_WORKSPACE/NamespaceManager/" \
+            "$instance/extensions/NamespaceManager/"
+          cat > "$instance/config/settings/global/50-NamespaceManager.php" <<'SETTINGS'
+          <?php
+          wfLoadExtension( 'NamespaceManager' );
+          SETTINGS
+          canasta restart --id "$CANASTA_INSTANCE_ID"
+
+      - name: Wait for the wiki to answer
+        run: "$RUNNER_TEMP/wait-for-wiki.sh"
+
+      - name: Create the NamespaceManager database schema
+        run: |
+          canasta maintenance update \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID" \
+            --skip-jobs
+
+      - name: Disable VisualEditor
+        run: |
+          canasta extension disable VisualEditor \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID" || true
+
+      - name: Wait for the wiki to answer without VisualEditor
+        run: "$RUNNER_TEMP/wait-for-wiki.sh"
+
+      - name: Run the end-to-end tests without VisualEditor
+        working-directory: NamespaceManager
+        env:
+          E2E_VISUALEDITOR: '0'
+          E2E_REPORT_DIR: report/without-visualeditor
+          E2E_RESULTS_DIR: test-results/without-visualeditor
+        run: npm run test:e2e
+
+      - name: Enable VisualEditor
+        run: |
+          canasta extension enable VisualEditor \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID"
+
+      - name: Wait for the wiki to answer with VisualEditor
+        run: "$RUNNER_TEMP/wait-for-wiki.sh"
+
+      - name: Update the database schema for VisualEditor
+        run: |
+          canasta maintenance update \
+            --id "$CANASTA_INSTANCE_ID" \
+            --wiki "$CANASTA_WIKI_ID" \
+            --skip-jobs
+
+      - name: Run the end-to-end tests with VisualEditor
+        working-directory: NamespaceManager
+        env:
+          E2E_VISUALEDITOR: '1'
+          E2E_REPORT_DIR: report/with-visualeditor
+          E2E_RESULTS_DIR: test-results/with-visualeditor
+        run: npm run test:e2e
+
+      - name: Collect wiki logs
+        if: failure()
+        run: |
+          cd "$RUNNER_TEMP/canasta/$CANASTA_INSTANCE_ID"
+          docker compose logs --no-color --tail 1000 > "$RUNNER_TEMP/canasta-logs.txt" 2>&1 || true
+
+      - name: Upload the Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            NamespaceManager/tests/e2e/report
+            NamespaceManager/tests/e2e/test-results
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload the wiki logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canasta-logs
+          path: ${{ runner.temp }}/canasta-logs.txt
+          if-no-files-found: ignore
+          retention-days: 7
