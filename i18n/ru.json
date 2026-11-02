@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yurina Tatiana"
+		]
+	},
+	"namespacemanager-desc": "Создавайте и управляйте пользовательскими пространствами имён непосредственно из вашей вики",
+	"managenamespaces": "Управление пространствами имён",
+	"managenamespaces-title": "Управление пространствами имён",
+	"action-managenamespaces": "управление пространствами имён вики",
+	"right-managenamespaces": "Управление пространствами имён вики",
+	"namespacemanager-javascript-required": "Для управления пространствами имён требуется JavaScript.",
+	"namespacemanager-loading": "Загрузка пространств имён…",
+	"namespacemanager-new-namespace": "Новое пространство имён",
+	"namespacemanager-add": "Добавить пространство имён",
+	"namespacemanager-remove": "Удалить пространство имён",
+	"namespacemanager-save": "Сохранить пространства имён",
+	"namespacemanager-saving": "Сохранение…",
+	"namespacemanager-id": "ID пространства имён",
+	"namespacemanager-name": "Имя",
+	"namespacemanager-required": "(обязательно)",
+	"namespacemanager-optional": "(необязательно)",
+	"namespacemanager-content": "Пространство имён содержимого",
+	"namespacemanager-subpages": "Включить подстраницы",
+	"namespacemanager-talksubpages": "Включить подстраницы обсуждений"
+}
