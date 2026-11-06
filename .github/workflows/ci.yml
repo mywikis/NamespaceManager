@@ -27,19 +27,19 @@ jobs:
         mediawiki: [ REL1_43 ]
     steps:
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           coverage: none
           tools: composer
       - name: Setup MediaWiki
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: wikimedia/mediawiki
           ref: ${{ matrix.mediawiki }}
       - name: Setup Extension
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           path: extensions/${{ env.EXTNAME }}
       - name: Setup Composer
@@ -64,19 +64,19 @@ jobs:
         mediawiki: [ REL1_43 ]
     steps:
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl, ast
           coverage: none
           tools: composer
       - name: Setup MediaWiki
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: wikimedia/mediawiki
           ref: ${{ matrix.mediawiki }}
       - name: Setup Extension
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           path: extensions/${{ env.EXTNAME }}
       - name: Setup Composer
@@ -97,19 +97,19 @@ jobs:
         mediawiki: [ REL1_43 ]
     steps:
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl, ast
           coverage: none
           tools: composer
       - name: Setup MediaWiki
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: wikimedia/mediawiki
           ref: ${{ matrix.mediawiki }}
       - name: Setup Extension
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           path: extensions/${{ env.EXTNAME }}
       - name: Setup Composer
